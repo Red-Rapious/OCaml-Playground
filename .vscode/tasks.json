@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo \"\n\n\n\\033[0;34m$(tput bold)>>> Exécution en cours du fichier : ${relativeFile} <<<$(tput sgr0)\\033[0m\n\n\" && ocaml ${file} && echo \"\n\n\n\\033[0;34m$(tput bold)>>> Fin de l'exécution <<<$(tput sgr0)\\033[0m\"",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
