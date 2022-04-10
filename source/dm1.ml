@@ -63,10 +63,10 @@ let decomp a b =
 	and c = cycle (fun x -> (10*x) mod b) a
 	in List.map v (fst c), List.map v (snd c) ;;
 
-let plus_grande_partie_cyclique =
-	let m = ref (0, 0) and l = ref 0 in
-	for i = 1 to 10000 do
-		l := List.length (snd (decomp 1 i));
-		if !l > (fst !m) then m := (i, !l) else ()
-	done;
-	snd !m;;
+	let plus_grande_partie_cyclique =
+    let m = ref (0, 0) and l = ref 0 in
+    for i = 1 to 10000 do
+        l := List.length (snd (decomp 1 i));
+        if !l > (fst !m) then m := (i, !l) else ()
+    done;
+    fst !m;; 
