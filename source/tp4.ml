@@ -100,41 +100,15 @@ let pre_inversions liste1 liste2 =
       else aux l1' l2 (acc + (ltot - List.length l2)) ltot
   in aux liste1 liste2 0 (List.length liste2);;
 
-(* TODO: DEUXIEME COMPTEUR *)
-
 (*print_int (pre_inversions [3;7;8;15;17] [2;4;5;14;16]);;*)
- 
-(* Idée 1 : séparer le tableau en deux partie égales ?, 
-  puis fusion sort chaque partie et enfin appliquer pre_inversions
-  sur les deux demi-tableaux convertis en listes  *)
+(* TODO: méthode avec un deuxième compteur *)
+
 let rec partitionner l = 
   match l with
   | a :: b :: l' ->
     let l1, l2 = partitionner l' in (a::l1, b::l2)
   | _ -> (l, [])
 ;;
-
-(*let partitionner_2 l =
-  let n = List.length l in
-  let a, a1, a2 = Array.of_list l, Array.make (n/2) 0, Array.make (n-(n/2)) 0 in
-  for i = 0 to n - 1 do
-    if i < n/2 
-      then a1.(i) <- a.(i)
-      else a2.(i-n/2) <- a.(i)
-    done;
-  Array.to_list a1, Array.to_list a2;;*)
-
-(*let fusionner_2 l1 l2 =
-  let n1, n2 = List.length l1, List.length l2 in
-  let a, a1, a2 = Array.make (n1+n2) 0, Array.of_list l1, Array.of_list l2 in
-  for i = 0 to n1 - 1 do
-    a.(i) <- a1.(i)
-  done;
-  for i = 0 to n2 - 2 do
-    a.(i+n1) <- a2.(i)
-  done;
-  Array.to_list a;;*)
-
 
 let rec fusionner l1 l2 =
   match (l1, l2) with
@@ -156,10 +130,6 @@ let rec tri_fusion_mod l =
   | _ -> l, 0
 ;;
 
-let inversions_old tab = 
-  let l1, l2 = partitionner (Array.to_list tab) in
-  pre_inversions l1 l2;;
-
 let inversions tab =
   snd (tri_fusion_mod (Array.to_list tab));;
 
@@ -171,7 +141,22 @@ let tableau_aleatoire taille bound =
   done;
   tab;;
 
-let tab = tableau_aleatoire 100 100;;
-print_int (inversions_naive tab);;
-print_string "\n";;
-print_int (inversions tab);;
+
+let fonction_test n taille bound =
+  let tab = ref [||] in
+  let s = ref 0.0 in
+  for i = 0 to n do
+    tab := tableau_aleatoire taille bound;
+    let i1 = inversions_naive !tab in
+    let t = Sys.time() in
+    let i2 =  inversions !tab in
+    let delta = Sys.time() -. t in
+    s := !s +. delta ;
+    if i1 = i2 
+      then (print_string "Oui, delta="; print_float delta ; print_string "\n")
+      else print_string "Non\n"
+  done;
+  print_float !s
+;;
+
+fonction_test 10 100 100;;
