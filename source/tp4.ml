@@ -133,6 +133,12 @@ let rec tri_fusion_mod l =
 let inversions tab =
   snd (tri_fusion_mod (Array.to_list tab));;
 
+
+(*-------------------------------------------*)
+(* ANNEXE : FONCTIONS DE TEST ET UTILITAIRES *)
+(*-------------------------------------------*)
+
+
 let tableau_aleatoire taille bound = 
   Random.init 12345;
   let tab = Array.make taille 0 in
