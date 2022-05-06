@@ -153,16 +153,17 @@ let fonction_test n taille bound =
   let s = ref 0.0 in
   for i = 0 to n do
     tab := tableau_aleatoire taille bound;
+    let t1 = Sys.time() in
     let i1 = inversions_naive !tab in
-    let t = Sys.time() in
+    let t2 = Sys.time() in
     let i2 =  inversions !tab in
-    let delta = Sys.time() -. t in
+    let delta = (t2 -. t1) -. (Sys.time() -. t2)  in
     s := !s +. delta ;
     if i1 = i2 
-      then (print_string "Oui, delta="; print_float delta ; print_string "\n")
+      then (print_string "Oui, delta = "; print_float delta ; print_string " s.\n")
       else print_string "Non\n"
   done;
-  print_float !s
+  print_float !s ; print_string " s.\n"
 ;;
 
-fonction_test 10 100 100;;
+fonction_test 1000 100 100;;
