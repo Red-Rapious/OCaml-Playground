@@ -88,28 +88,17 @@ let inversions_naive t =
   done;
   !tot;;
 
-  (*let pre_inversions liste1 liste2 = 
-    let rec aux l1 l2 acc ltot =
-      match l1, l2 with
-      | [], _ -> acc
-      | l, [] -> acc + (List.length l) * ltot
-      | a :: l1', b :: l2'
-      -> if a > b 
-        then aux l1 l2' acc ltot
-    else aux l1' l2 (acc + (ltot - List.length l2)) ltot
-  in aux liste1 liste2 0 (List.length liste2);;*)
-  
-  (* Complexité en O(l1 +l2) avec li la longueur de la liste i *)
-  let pre_inversions liste1 liste2 =
+(* Complexité en O(l1 +l2) avec li la longueur de la liste i *)
+let pre_inversions liste1 liste2 =
   let rec aux l1 l2 inv bar =
-    match l1, l2 with
-    | [], _ -> inv
-    | l, [] -> inv + bar * (List.length l)
-    | a :: l1', b :: l2' ->
-      if a > b 
-        then aux l1 l2' inv (bar + 1)
-        else aux l1' l2 (inv + bar) bar
-  in aux liste1 liste2 0 0;;
+  match l1, l2 with
+  | [], _ -> inv
+  | l, [] -> inv + bar * (List.length l)
+  | a :: l1', b :: l2' ->
+    if a > b 
+      then aux l1 l2' inv (bar + 1)
+      else aux l1' l2 (inv + bar) bar
+in aux liste1 liste2 0 0;;
 
 (*print_int (pre_inversions [3;7;8;15;17] [2;4;5;14;16]);;*)
 (* TODO: méthode avec un deuxième compteur *)
@@ -162,7 +151,7 @@ let tableau_aleatoire taille bound =
 let fonction_test n taille bound =
   let tab = ref [||] in
   let s = ref 0.0 in
-  for i = 0 to n do
+  for i = 0 to n-1 do
     tab := tableau_aleatoire taille bound;
     let t1 = Sys.time() in
     let i1 = inversions_naive !tab in
@@ -174,7 +163,8 @@ let fonction_test n taille bound =
       then (print_string "Oui, delta = "; print_float delta ; print_string " s.\n")
       else print_string "Non\n"
   done;
-  print_float !s ; print_string " s.\n"
+  print_float !s ; print_string " s.\n";
+  !s
 ;;
 
 fonction_test 1000 100 100;;

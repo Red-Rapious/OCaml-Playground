@@ -14,3 +14,11 @@ let rec suite_recurrente (f, n, a) =
 
 let f = fun x ->2*x;;
 print_int (suite_recurrente (f, 10, 1));;
+
+
+let rec hamming2 n =
+  if n = 3 || n = 2 || n = 5 then true else
+  if n mod 2 = 0 then hamming2 (n/2)
+  else if n mod 3 = 0 then hamming2 (n/3)
+  else if n mod 5 = 0 then hamming2 (n/5)
+  else false;;
