@@ -97,3 +97,18 @@ let rec ajoute x = function
 (* Ainsi la complexité est en O(n) avec n la taille de la liste*)
 (* L'arbre correspondant est un peigne gauche *)
 
+(* Exercice 11 *)
+let ind_max_liste l = 
+  let rec aux l (i, m) = 
+    if l = [] then (i, m)
+    else match m with
+    | None ->  aux (List.tl l) (1, Some (List.hd l))
+    | Some a -> if a < (List.hd l) then aux (List.tl l) (i + 1, Some (List.hd l))
+                else aux (List.tl l) (i, m)
+
+  in match aux l (0, None) with
+  | (i, None) -> failwith "erreur"
+  | (i, Some a) -> (i, a);;
+
+let liste = [3 ; 7; 6; 8; 9 ; 8 ; 5];;
+ind_max_liste liste;;
