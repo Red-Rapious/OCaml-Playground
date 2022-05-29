@@ -69,3 +69,9 @@ in aux a ; !l;;
 
 (* Complexité en max(C_liste_of_arbre, C_arbre_of_list) *)
 let normalise l = list_of_arbre (arbre_of_list l);;
+
+let rec retrait = function
+| V -> failwith "erreur: retrait d'un arbre vide"
+| N((a, b), V, d) -> a, (if a != b then N((a+1, b), V, d) else d)
+| N(i, g, d) -> let n, g' = retrait g in n, N(i, g', d);;
+
