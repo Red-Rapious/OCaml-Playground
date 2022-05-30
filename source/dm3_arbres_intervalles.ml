@@ -35,7 +35,7 @@ let rec decoupe_gauche n = function
 let rec decoupe_droite n = function
 | V -> (V, n)
 | N ((a, b), g, d) -> 
-  if n >= a && n <= b then (d, a)
+  if n >= a && n <= b then (d, b)
   else if n < b then 
     let i, t = decoupe_droite n g in (N((a, b), d, i), t) 
   else decoupe_droite n d;;
@@ -46,13 +46,21 @@ let insere x y a =
   let ad, td = decoupe_droite y a in 
   N ((tg, td), ag, ad);;
 
-(* Complexité en O(n^2) dans le pire cas ? *)
+let insere2 x y a =
+  let ag, tg = decoupe_gauche x a in
+  let ad, td = decoupe_droite y a in
+  if tg <= x && y <= td then N((tg, td), ag, ad)
+  else if x <= tg && y < td then N((x, td), ag, ad)
+  else if tg < x && x < td && td <= y then N((tg, y), ag, ad)
+  else N((x, y), ag, ad);;
+
+(* Complexité en O(n^2) dans le pire cas, voire moins ? *)
 let rec arbre_of_list = function
 | [] -> V
 | (x, y) :: l -> insere x y (arbre_of_list l);;
 
-(*let l = [(0,1) ; (5, 7) ; (4, 9) ; (6, 10)];;
-let a = arbre_of_list l;;*)
+let l = [(0,1) ; (5, 7) ; (4, 9) ; (6, 10)];;
+let a2 = arbre_of_list l;;
 
 (* Complexité dégeulasse *)
 let rec list_of_arbre = function
@@ -75,3 +83,24 @@ let rec retrait = function
 | N((a, b), V, d) -> a, (if a != b then N((a+1, b), V, d) else d)
 | N(i, g, d) -> let n, g' = retrait g in n, N(i, g', d);;
 
+type infinint =
+| Inf
+| Int of int
+
+type partie_cofinie = 
+| V
+| N of (int * infinint) * partie_cofinie * partie_cofinie
+
+let rec retrait_cof = function
+| V -> failwith "erreur: retrait d'une partie non cofinie"
+| N((a, Inf), V, d) -> a, d (* Note : d = V *)
+| N((a, Int(b)), V, d) -> a, (if a != b then N((a+1, Int(b)), V, d) else d)
+| N(i, g, d) -> let n, g' = retrait_cof g in n, N(i, g', d);;
+
+let rec ajout_cof n = function
+| V -> failwith "erreur: ajout dans une partie non cofinie"
+| N((a, Inf), g, d) -> if a <= n then N((a, Inf), g, d) else N((a, Inf), ajout_cof n g, d)
+| N((a, Int(b)), g, d) -> 
+  if a <= n && n <= b then N((a, Int(b)), g, d)
+  else if n < a then ajout_cof n g 
+  else ajout_cof n d;;
