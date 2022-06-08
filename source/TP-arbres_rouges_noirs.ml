@@ -38,6 +38,3 @@ in match aux a arbre with
 (* Sachant que la complexité de `update_conflict` est en O(1), 
 `insert` est en complexité O(ln(n)), soit O(ln(t)), 
 avec n le nombre de noeuds et t temps d'exécution *)
-
-let rec delete a = function
-| Leaf -> Leaf
