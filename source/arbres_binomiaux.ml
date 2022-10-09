@@ -66,9 +66,13 @@ let extraire_minimum tas =
   (* Extraction du minimum, 'min', et de l'arbre le contenant, 'tarbre'*)
   let rec tarbre_et_min = function
   | [] -> failwith "extraire_minimum : tas vide"
-  | A(r, a, l) :: [] -> a, l
-  | A(r, a, l) :: l' -> let min, enf = tarbre_et_min l' in if a > min then min, enf else a, l
+  | A(r, a, l) :: [] -> a, l, []
+  | A(r, a, l) :: l' -> let min, enf, t = tarbre_et_min l' in 
+    if a > min 
+      then min, enf, A(r, a, l) :: t 
+    else 
+      a, l, l'
   in 
-  let min, tarbre = tarbre_et_min tas in
-  min, fusion tas (List.rev tarbre)
+  let min, tarbre, t = tarbre_et_min tas in
+  min, fusion t (List.rev tarbre)
 ;;
