@@ -35,7 +35,7 @@ let couplage_maximal g =
     for i = 0 to nu-1 do 
       vus.(i) <- false 
     done ; 
-    ignore (visite_sommet)
+    ignore (visite_sommet s)
   done ; 
   couplage
 ;;

@@ -18,7 +18,7 @@ let echanger t i j =
 let rec remontee tab i =
   if i > 0 then begin
     let parent = (i + 1) / 2 - 1 in begin
-        if tab.(i) < tab.(parent) then begin
+        if tab.(i) > tab.(parent) then begin
           echanger tab i parent ;
           remontee tab parent
         end
