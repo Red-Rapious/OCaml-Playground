@@ -1,9 +1,11 @@
+(* Indique le nombre d'éléments d'une liste vérifiant p *)
 let rec nombre_liste p liste =
   match liste with 
     | [] -> 0
     | a :: l' -> (if p a then 1 else 0) + nombre_liste p l'
 ;;
 
+(* Indique s'il existe un élément de tab vérifiant p *)
 let existence_tableau p tab =
   let existe = ref false in 
   for i = 0 to Array.length tab - 1 do 

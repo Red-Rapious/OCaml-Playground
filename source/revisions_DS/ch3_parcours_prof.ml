@@ -49,7 +49,7 @@ let detection_de_cycle g =
 
   let rec traiter sommet = 
     if !cycle || etats.(sommet) = 1 then
-      cycle := false
+      cycle := true
     else
       if etats.(sommet) = 0 then begin
         etats.(sommet) <- 1 ;
